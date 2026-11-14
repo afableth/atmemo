@@ -1,0 +1,32 @@
+{
+  "lexicon": 1,
+  "id": "fyi.afabl.atmemo.memo",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "An end-to-end encrypted memo. The memo body is encrypted client-side for the owner only and stored inline in this record.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["encryptedContent", "createdAt", "updatedAt"],
+        "properties": {
+          "encryptedContent": {
+            "type": "bytes",
+            "description": "Ciphertext of the memo, encrypted so that only the owner can decrypt it. Stored inline in the record (base64-encoded as {\"$bytes\": ...} in JSON).",
+            "maxLength": 65536
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when the memo was originally created."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when the memo was last updated. Equal to createdAt on creation."
+          }
+        }
+      }
+    }
+  }
+}

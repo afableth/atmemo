@@ -81,7 +81,8 @@ test("writes use Space endpoints and AT Protocol bytes encoding", async () => {
     $bytes: "AQID",
   });
   assert.equal(JSON.parse(calls[1].init.body).collection, record.$type);
-  assert.equal(JSON.parse(calls[1].init.body).validate, true);
+  for (const call of calls)
+    assert.equal(Object.hasOwn(JSON.parse(call.init.body), "validate"), false);
 });
 
 test("invalid records and oversized ciphertext are rejected before making requests", async () => {
@@ -130,6 +131,7 @@ test("batch writes validate records and encode discriminated operations", async 
     ),
   );
   assert.ok(body.writes.every((write) => write.collection === record.$type));
+  assert.equal(Object.hasOwn(body, "validate"), false);
   assert.deepEqual(body.writes[0].value, record);
 });
 

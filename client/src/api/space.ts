@@ -66,6 +66,8 @@ function writeResult(value: unknown): SpaceWriteResult {
 }
 
 /** RPCにはLexのClientを使わず、OAuthSessionのfetchHandlerを受け取る。 */
+// Writes omit validate: the PDS validates known Lexicons without rejecting unknown
+// application types. Records are always validated locally with memo.$parse.
 export function createSpaceApi(fetch: AuthenticatedFetch) {
   async function request(
     method: string,
@@ -164,7 +166,6 @@ export function createSpaceApi(fetch: AuthenticatedFetch) {
           ...input,
           record,
           collection,
-          validate: true,
         }),
       );
     },
@@ -177,7 +178,6 @@ export function createSpaceApi(fetch: AuthenticatedFetch) {
           ...input,
           record,
           collection,
-          validate: true,
         }),
       );
     },
@@ -202,7 +202,6 @@ export function createSpaceApi(fetch: AuthenticatedFetch) {
         space: input.space,
         repo: input.repo,
         writes,
-        validate: true,
       });
     },
   };

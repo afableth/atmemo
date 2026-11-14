@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "node --test src/data/*.test.mjs src/components/*.test.mjs"
+    "test": "node --test src/data/*.test.mjs src/components/*.test.mjs",
+    "deploy": "pnpm run build && wrangler deploy",
+    "cf:preview": "pnpm run build && wrangler dev"
   },
   "dependencies": {
     "@atproto/lex": "^0.4.8",
@@ -31,6 +33,7 @@
     "oxlint": "^1.90.0",
     "storybook": "^10.6.7",
     "typescript": "~7.0.2",
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "wrangler": "^4.0.0"
   }
 }

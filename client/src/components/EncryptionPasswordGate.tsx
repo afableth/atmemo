@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import { setPassword } from "../crypto";
+import { getPassword, setPassword } from "../crypto";
 import { EncryptionPasswordDialog } from "./EncryptionPasswordDialog";
 
 export function EncryptionPasswordGate({
@@ -12,7 +12,13 @@ export function EncryptionPasswordGate({
   onCancel: () => void | Promise<void>;
   children: ReactNode;
 }) {
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(() => {
+    try {
+      return Boolean(getPassword());
+    } catch {
+      return false;
+    }
+  });
   if (ready) return children;
   return (
     <div className="app-shell">

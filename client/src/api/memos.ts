@@ -2,6 +2,18 @@ import { client } from "../auth/session";
 import { NotAuthenticatedError } from "./errors";
 import { createSpaceApi } from "./space";
 import { createMemoRepository } from "./memo-repository";
+import { ensureSpace, memoSpaceUri } from "./ensure-space";
+
+export async function ensureMemoSpace(): Promise<void> {
+  const activeClient = client;
+  if (!activeClient) throw new NotAuthenticatedError();
+  const api = createSpaceApi((path, init) => {
+    if (client !== activeClient) throw new NotAuthenticatedError();
+    return activeClient.agent.fetchHandler(path, init ?? {});
+  });
+  await ensureSpace(api, activeClient.assertDid);
+  if (client !== activeClient) throw new NotAuthenticatedError();
+}
 
 export const space = createSpaceApi((path, init) => {
   if (!client) throw new NotAuthenticatedError();
@@ -49,7 +61,7 @@ const repository = createMemoRepository(() => {
   const repo = client.assertDid;
   return {
     repo,
-    space: "at://" + repo + "/space/fyi.afabl.atmemo/self",
+    space: memoSpaceUri(repo),
     api: space,
   };
 });

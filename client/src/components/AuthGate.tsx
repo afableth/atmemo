@@ -10,6 +10,7 @@ import {
 } from "../auth/session";
 import { LoginForm } from "./LoginForm";
 import { EncryptionPasswordGate } from "./EncryptionPasswordGate";
+import { SpaceGate } from "./SpaceGate";
 
 export function AuthGate({ children }: { children: ReactNode }) {
   const auth = useSyncExternalStore(subscribeAuth, getAuthState);
@@ -44,7 +45,7 @@ export function AuthGate({ children }: { children: ReactNode }) {
       userId={auth.did!}
       onCancel={signOut}
     >
-      {children}
+      <SpaceGate onCancel={signOut}>{children}</SpaceGate>
     </EncryptionPasswordGate>
   );
 }

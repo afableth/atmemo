@@ -6,7 +6,7 @@ export const CLIENT_METADATA_PATH = "/oauth-client-metadata.json";
 // Until that is available, keep authority, key, collection and actions restricted.
 // The memo API still targets only fyi.afabl.atmemo/self.
 export const OAUTH_SCOPE =
-  "atproto space:*?authority=self&skey=self&collection=fyi.afabl.atmemo.memo&action=read_self&action=create&action=update&action=delete";
+  "atproto space:*?authority=self&skey=self&collection=fyi.afabl.atmemo.memo&action=read_self&action=create&action=update&action=delete&manage=create";
 
 export function getOAuthClientId(origin: string): string {
   const url = new URL(origin);

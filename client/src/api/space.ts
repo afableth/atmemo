@@ -121,6 +121,18 @@ export function createSpaceApi(fetch: AuthenticatedFetch) {
   }
 
   return {
+    async getSpace(space: string): Promise<{ uri: string }> {
+      const result = object(await request("getSpace", { space }));
+      return { uri: string(result.uri) };
+    },
+    async createSpace(input: {
+      spaceType: string;
+      skey: string;
+      policy: { $type: "com.atproto.personalspace.policy" };
+    }): Promise<{ uri: string }> {
+      const result = object(await request("createSpace", undefined, input));
+      return { uri: string(result.uri) };
+    },
     async listRecords(
       params: SpaceRepo & {
         cursor?: string;

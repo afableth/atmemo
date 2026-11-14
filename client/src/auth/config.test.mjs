@@ -24,6 +24,7 @@ test("production metadata is fixed to atmemo.afabl.fyi", () => {
   assert.equal(permission.pathname, "*");
   assert.equal(permission.searchParams.get("authority"), "self");
   assert.equal(permission.searchParams.get("skey"), "self");
+  assert.deepEqual(permission.searchParams.getAll("manage"), ["create"]);
   assert.equal(
     permission.searchParams.get("collection"),
     "fyi.afabl.atmemo.memo",

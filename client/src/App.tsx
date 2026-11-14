@@ -5,9 +5,17 @@ import { useMemoFeed } from "./hooks/useMemoFeed";
 import { Icon } from "./components/Icon";
 import { MemoCard } from "./components/MemoCard";
 import { MemoComposer } from "./components/MemoComposer";
+import { AuthGate } from "./components/AuthGate";
+import { signOut } from "./auth/session";
 import "./App.css";
 
-export function MemoApp({ repository }: { repository: MemoRepository }) {
+export function MemoApp({
+  repository,
+  onSignOut,
+}: {
+  repository: MemoRepository;
+  onSignOut?: () => Promise<void>;
+}) {
   const { memos, loading, hasMore, error, loadMore, reload } =
     useMemoFeed(repository);
   const [notice, setNotice] = useState("");
@@ -40,14 +48,21 @@ export function MemoApp({ repository }: { repository: MemoRepository }) {
       <main className="feed">
         <header className="page-heading">
           <h1>atmemo</h1>
-          <button
-            className="icon-button"
-            onClick={() => void reload()}
-            disabled={loading}
-            aria-label="メモを再読み込み"
-          >
-            <Icon name="refresh" />
-          </button>
+          <div className="header-actions">
+            {onSignOut && (
+              <button className="text-button" onClick={() => void onSignOut()}>
+                ログアウト
+              </button>
+            )}
+            <button
+              className="icon-button"
+              onClick={() => void reload()}
+              disabled={loading}
+              aria-label="メモを再読み込み"
+            >
+              <Icon name="refresh" />
+            </button>
+          </div>
         </header>
         {repository.save && (
           <MemoComposer
@@ -102,5 +117,9 @@ export function MemoApp({ repository }: { repository: MemoRepository }) {
   );
 }
 export default function App() {
-  return <MemoApp repository={memoApi} />;
+  return (
+    <AuthGate>
+      <MemoApp repository={memoApi} onSignOut={signOut} />
+    </AuthGate>
+  );
 }

@@ -59,14 +59,14 @@ export function MemoCard({
       active = false;
     };
   }, [memo, visible, attempt]);
-  const date = new Date(memo.updatedAt);
+  const date = memo.updatedAt;
   return (
     <article className="memo-card" ref={ref} aria-label={`メモ ${memo.id}`}>
       <div className="memo-meta">
         <div className="memo-author">
           <time
-            dateTime={memo.updatedAt}
-            title={`作成: ${new Date(memo.createdAt).toLocaleString("ja-JP")} / 更新: ${date.toLocaleString("ja-JP")}`}
+            dateTime={memo.updatedAt.toISOString()}
+            title={`作成: ${memo.createdAt.toLocaleString("ja-JP")} / 更新: ${date.toLocaleString("ja-JP")}`}
           >
             {date.toLocaleDateString("ja-JP", {
               month: "long",
@@ -90,7 +90,8 @@ export function MemoCard({
             await repository.save!({
               id: memo.id,
               body,
-              hash: memo.hash,
+              cid: memo.cid,
+              createdAt: memo.createdAt,
             });
             setEditing(false);
             await onChanged();
@@ -165,7 +166,7 @@ export function MemoCard({
             onClick={async () => {
               setDeleting(true);
               try {
-                await repository.remove!(memo.id, memo.hash);
+                await repository.remove!(memo.id, memo.cid);
                 await onChanged();
               } catch (error) {
                 setError(

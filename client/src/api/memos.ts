@@ -1,8 +1,18 @@
+import { client } from "../auth/session";
+import { NotAuthenticatedError } from "./errors";
+import { createSpaceApi } from "./space";
+import { createMemoRepository } from "./memo-repository";
+
+export const space = createSpaceApi((path, init) => {
+  if (!client) throw new NotAuthenticatedError();
+  return client.agent.fetchHandler(path, init ?? {});
+});
+
 export interface MemoSummary {
   id: string;
-  updatedAt: string;
-  createdAt: string;
-  hash: string;
+  updatedAt: Date;
+  createdAt: Date;
+  cid: string;
 }
 
 export interface Memo extends MemoSummary {
@@ -18,16 +28,40 @@ export interface MemoReader {
   list(cursor?: string): Promise<MemoPage>;
 }
 
+export type SaveMemoInput =
+  | {
+      id: string;
+      body: string;
+      createdAt: Date;
+      cid: string;
+    }
+  | {
+      body: string;
+    };
+
 export interface MemoRepository extends MemoReader {
-  save?(input: {
-    id?: string;
-    body: string;
-    hash?: string;
-  }): Promise<MemoSummary>;
-  remove?(id: string, hash: string): Promise<void>;
+  save?(input: SaveMemoInput): Promise<void>;
+  remove?(id: string, cid: string): Promise<void>;
 }
 
-// API接続処理を実装する。
-export async function list(_cursor?: string): Promise<MemoPage> {
-  return { items: [] };
+const repository = createMemoRepository(() => {
+  if (!client) throw new NotAuthenticatedError();
+  const repo = client.assertDid;
+  return {
+    repo,
+    space: "at://" + repo + "/space/fyi.afabl.atmemo/self",
+    api: space,
+  };
+});
+
+export async function list(cursor?: string): Promise<MemoPage> {
+  return repository.list(cursor);
+}
+
+export async function save(input: SaveMemoInput): Promise<void> {
+  await repository.save(input);
+}
+
+export async function remove(id: string, cid: string): Promise<void> {
+  await repository.remove(id, cid);
 }

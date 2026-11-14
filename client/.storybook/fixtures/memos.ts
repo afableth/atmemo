@@ -33,9 +33,9 @@ export function createStoryRepository({
   let memos = samples.map((memo, index) => ({
     ...memo,
     id: String(index + 1),
-    hash: String(index + 1),
-    createdAt: new Date(Date.UTC(2026, 10, 14 - index, 9)).toISOString(),
-    updatedAt: new Date(Date.UTC(2026, 10, 14 - index, 9)).toISOString(),
+    cid: String(index + 1),
+    createdAt: new Date(Date.UTC(2026, 10, 14 - index, 9)),
+    updatedAt: new Date(Date.UTC(2026, 10, 14 - index, 9)),
   }));
   return {
     async list(cursor) {
@@ -55,18 +55,16 @@ export function createStoryRepository({
       };
     },
     async save(input) {
-      const previous = memos.find((memo) => memo.id === input.id);
-      const now = new Date().toISOString();
+      const updating = "id" in input;
+      const now = new Date();
       const memo = {
-        id: input.id ?? String(++nextId),
+        id: updating ? input.id : String(++nextId),
         body: input.body,
-        hash: String(++revision),
-        createdAt: previous?.createdAt ?? now,
+        cid: String(++revision),
+        createdAt: updating ? input.createdAt : now,
         updatedAt: now,
       };
       memos = [memo, ...memos.filter((item) => item.id !== memo.id)];
-      const { body: _body, ...summary } = memo;
-      return summary;
     },
     async remove(id) {
       memos = memos.filter((memo) => memo.id !== id);

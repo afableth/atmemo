@@ -405,3 +405,85 @@ h1 {
 .memo-body summary {
   cursor: pointer;
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.login-page {
+  max-width: 400px;
+}
+.login-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+}
+.login-form input {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #dbe4da;
+  border-radius: 5px;
+  background: #fff;
+}
+.login-form input:focus {
+  border-color: #8fb195;
+  box-shadow: 0 0 0 2px #dfebdf;
+}
+.passport-button {
+  grid-column: 1 / -1;
+  padding: 11px 12px;
+  border: 1px solid #dbe4da;
+  border-radius: 5px;
+  background: #fff;
+  color: #303c36;
+  font-size: 13px;
+}
+.passport-button:hover {
+  background: #edf3ed;
+}
+
+.encryption-dialog {
+  width: min(420px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 24px;
+  border: 1px solid #dbe4da;
+  border-radius: 10px;
+  color: #303c36;
+  background: #fff;
+  box-shadow: 0 20px 60px #14271c26;
+}
+.encryption-dialog::backdrop {
+  background: #26392db3;
+}
+.encryption-dialog h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.encryption-dialog p {
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.encryption-dialog input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #bac9bd;
+  border-radius: 5px;
+  background: #fff;
+}
+.encryption-dialog input:focus {
+  border-color: #397c57;
+  box-shadow: 0 0 0 2px #dfebdf;
+}
+.encryption-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}

@@ -3,6 +3,7 @@
  */
 
 export * as applyWrites from "./repo/applyWrites.js";
+export * as deleteRecord from "./repo/deleteRecord.js";
 export * as getRecord from "./repo/getRecord.js";
 export * as listRecords from "./repo/listRecords.js";
 export * as putRecord from "./repo/putRecord.js";

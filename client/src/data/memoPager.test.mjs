@@ -7,9 +7,9 @@ test("page requests are serialized, content remains lazy, and EOF stops requests
   let contentCalls = 0;
   const memo = {
     id: "1",
-    createdAt: "",
-    updatedAt: "",
-    hash: "1",
+    createdAt: new Date("2026-11-14T00:00:00Z"),
+    updatedAt: new Date("2026-11-14T00:00:00Z"),
+    cid: "1",
     getContent: async () => {
       contentCalls++;
       return "**本文**";

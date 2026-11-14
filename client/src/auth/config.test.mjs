@@ -19,9 +19,9 @@ test("production metadata is fixed to atmemo.afabl.fyi", () => {
     "https://atmemo.afabl.fyi/oauth/callback",
   ]);
   assert.equal(metadata.scope, OAUTH_SCOPE);
-  assert.ok(metadata.scope.includes("space:fyi.afabl.atmemo?"));
+  assert.ok(metadata.scope.includes("space:*?"));
   const permission = new URL(metadata.scope.split(" ")[1]);
-  assert.equal(permission.pathname, "fyi.afabl.atmemo");
+  assert.equal(permission.pathname, "*");
   assert.equal(permission.searchParams.get("authority"), "self");
   assert.equal(permission.searchParams.get("skey"), "self");
   assert.equal(

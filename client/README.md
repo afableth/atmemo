@@ -113,7 +113,9 @@ pnpm exec lex build --include fyi.afabl.atmemo.memo --override
 
 RPCの型は[公式permissioned-dataブランチのスキーマ](https://github.com/bluesky-social/atproto/tree/16bfeba760aede46f0b87bf94febef9e6ea84b95/lexicons/com/atproto/space)に基づきます。
 
-OAuthは `fyi.afabl.atmemo` の `self` Spaceに対して、自分のレコードの読み取りとメモの作成・更新・削除を要求します。保存先SpaceはPDS側で用意されている必要があります。
+OAuthは `space:*` を使用し、本人所有（`authority=self`）・キー `self`・コレクション `fyi.afabl.atmemo.memo` に対して、自分のレコードの読み取りとメモの作成・更新・削除を要求します。Space型を指定すると認可サーバーが公開済みの `type: "space"` 宣言を解決し、取得できない場合に `Unable to retrieve space declarations` となるため、型の指定はワイルドカードにしています。この権限は同じ所有者・キー・コレクションの別のSpace型にも適用されますが、アプリの保存先は `fyi.afabl.atmemo/self` に固定しています。保存先SpaceはPDS側で用意されている必要があります。
+
+この変更を本番へ反映するときは、ビルドで生成される `oauth-client-metadata.json` も一緒に公開し、ログインをやり直してください。未公開の古いメタデータでは変更後のscopeを要求できません。
 
 `save` は `crypto.ts` の `encrypt()` で暗号化してから `putRecord` を呼びます。新規IDは公式の `TID.nextStr()` で生成し、更新では既存のIDと作成日時を維持します。`remove` は `deleteRecord`、`list` は `listRecords` を使用します。
 

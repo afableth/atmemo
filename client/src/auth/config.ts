@@ -2,8 +2,11 @@ export const PUBLIC_ORIGIN = "https://atmemo.afabl.fyi";
 export const OAUTH_CALLBACK_PATH = "/oauth/callback";
 export const PASSPORT_CALLBACK_PATH = "/atpassport/callback";
 export const CLIENT_METADATA_PATH = "/oauth-client-metadata.json";
+// Concrete Space types require a published type: "space" declaration at consent.
+// Until that is available, keep authority, key, collection and actions restricted.
+// The memo API still targets only fyi.afabl.atmemo/self.
 export const OAUTH_SCOPE =
-  "atproto space:fyi.afabl.atmemo?authority=self&skey=self&collection=fyi.afabl.atmemo.memo&action=read_self&action=create&action=update&action=delete";
+  "atproto space:*?authority=self&skey=self&collection=fyi.afabl.atmemo.memo&action=read_self&action=create&action=update&action=delete";
 
 export function getOAuthClientId(origin: string): string {
   const url = new URL(origin);
